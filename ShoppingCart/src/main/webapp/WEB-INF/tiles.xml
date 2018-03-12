@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="base.definition" template="/WEB-INF/views/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/views/menu1.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
+	</definition>
+
+	<definition name="Login" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/Login.jsp" />
+	</definition>
+
+	<definition name="ProductList" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/ProductList.jsp" />
+	</definition>
+	
+	<definition name="home" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+	</definition>
+	
+	<definition name="addProducts" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/addProducts.jsp" />
+	</definition>
+	
+	<definition name="EditProduct" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/EditProduct.jsp" />
+	</definition>
+	
+	<definition name="UserRegistration" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/UserRegistration.jsp" />
+	</definition>
+	
+	<definition name="OrderConfirmation" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/OrderConfirmation.jsp" />
+	</definition>
+	
+	<definition name="register" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/register.jsp" />
+	</definition>
+	
+	<definition name="CartPage" extends="base.definition">
+		<put-attribute name="title" value="User Login" />
+		<put-attribute name="body" value="/WEB-INF/views/CartPage.jsp" />
+	</definition>
+	
+</tiles-definitions>  
