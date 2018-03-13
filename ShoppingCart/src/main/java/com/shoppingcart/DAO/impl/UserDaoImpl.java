@@ -37,6 +37,10 @@ public class UserDaoImpl implements UserDao {
 			UserDetailsBean userbean = new UserDetailsBean();
 			userbean.setName(userdetails.getName());
 			userbean.setPassword(userdetails.getPassword());
+			userbean.setEmail(userdetails.getEmail());
+			userbean.setUserrole(userdetails.getUserrole());
+			userbean.setPhone(userdetails.getPhone());
+			userbean.setAddress(userdetails.getAddress());
 			return userbean;
 		}
 		return null;

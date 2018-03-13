@@ -1,5 +1,7 @@
 package com.shoppingcart.Model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ public class Orders {
 	private int orderid;
 	private int total_amount;
 	private String cust_email;
+	private Date date;
 	
 	
 	@Id 
@@ -40,11 +43,19 @@ public class Orders {
 	public void setCust_email(String cust_email) {
 		this.cust_email = cust_email;
 	}
+	@Column(name = "date")
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	@Override
 	public String toString() {
 		return "Orders [orderid=" + orderid + ", total_amount=" + total_amount
-				+ ", cust_email=" + cust_email + "]";
+				+ ", cust_email=" + cust_email + ", date=" + date + "]";
 	}
+	
 	
 	
 }

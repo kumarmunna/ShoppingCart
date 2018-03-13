@@ -1,5 +1,7 @@
 package com.shoppingcart.DAO.impl;
 
+import java.util.Date;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
@@ -43,6 +45,7 @@ public class OrdersDaoImpl implements OrdersDao {
 		order.setOrderid(orderid);
 		order.setTotal_amount(1000);
 		order.setCust_email("santosh@gmail.com");
+		order.setDate(new Date());
 		Session session =  hibernateDaoImpl.getSessionFactory().openSession();
 		session.save(order);
 		session.close();

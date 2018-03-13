@@ -32,13 +32,15 @@ public class SubmitOrderController {
 		ModelAndView mv = new ModelAndView();
 		//Check custormer existance 
 		boolean userStatus = getUserStatus(request);
+		System.out.println(" user status; "+ userStatus);
 		if(!userStatus){
 			//User is not registered... redirect to user registration page/Login page. 
 			mv.setViewName("redirect:/register");
 		}else{
 			HttpSession session = request.getSession();
 			Set<CartInfoBean> cartInfo = (Set<CartInfoBean>)  session.getAttribute("cartInfo");
-			order_detailsDao.saveOrder(cartInfo);
+			UserDetailsBean userdetails = (UserDetailsBean) session.getAttribute("userdetails");
+			order_detailsDao.saveOrder(cartInfo,userdetails);
 			mv.setViewName("OrderConfirmation");
 		}
 		return mv;
@@ -48,7 +50,9 @@ public class SubmitOrderController {
 		
 		boolean userStatus = false;
 		HttpSession session = request.getSession();
+		System.out.println(" in get user status ---->>");
 		String usertype = (String) session.getAttribute("userstatus");
+		System.out.println(" in get user type ---->>"+ usertype);
 		if(usertype != null && usertype.equalsIgnoreCase("auth")){
 			userStatus = true;
 		}

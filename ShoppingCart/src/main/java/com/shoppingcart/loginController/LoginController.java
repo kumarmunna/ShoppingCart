@@ -74,7 +74,7 @@ public class LoginController {
 				mv.addObject("exist");
 //				logger.info("successfull login ");
 				session.setAttribute("userstatus", "auth");
-				session.setAttribute("name", details.getName());
+				session.setAttribute("userdetails", details);
 				String redirectUrl = request.getHeader("referer");
 				System.out.println("referer: "+ redirectUrl);
 			}else{
