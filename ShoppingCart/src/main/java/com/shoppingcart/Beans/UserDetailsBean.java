@@ -11,6 +11,7 @@ public class UserDetailsBean {
 	private String address;
 	private String phone;
 	private String email;
+	private String flowType;
 
 	public String getUsername() {
 		return username;
@@ -76,12 +77,20 @@ public class UserDetailsBean {
 		this.email = email;
 	}
 
+	public String getFlowType() {
+		return flowType;
+	}
+
+	public void setFlowType(String flowType) {
+		this.flowType = flowType;
+	}
+
 	@Override
 	public String toString() {
 		return "UserDetailsBean [username=" + username + ", password="
 				+ password + ", userrole=" + userrole + ", active=" + active
 				+ ", name=" + name + ", address=" + address + ", phone="
-				+ phone + ", email=" + email + "]";
+				+ phone + ", email=" + email + ", flowType=" + flowType + "]";
 	}
 
 }

@@ -65,7 +65,8 @@ public class UserRegistrationController {
 		details.setUserrole("USER");
 		
 		userDao.saveUser(details);
-		mv.setViewName("OrderConfirmation");
+		mv.setViewName("UserRegistration");
+		mv.addObject("success","You have successfully registered ..");
 		return mv;
 	}
 }

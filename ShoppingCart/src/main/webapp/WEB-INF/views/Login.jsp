@@ -15,26 +15,18 @@
 </head>
 <body>
 
-<h2>Shopping Cart</h2>
-<pre>
+<div style="text-align: center;">
+
+
 	<form:form action="login" method="post" modelAttribute="loginbean">
 			<div class="error">
 			 <c:out value = "${notexist }"/>
-			</div>
-		User Name:	<form:input path="username"/> <form:errors path="username" cssClass="error" />
-		Password:	<form:password path="password"/> <form:errors path="password" cssClass="error" />
+			</div><br>
+User Name:	<form:input path="username"/> <form:errors path="username" cssClass="error" /><br><br>
+	Password:	<form:password path="password"/> <form:errors path="password" cssClass="error" /><br><br>
 					<input type="submit" value="Login"/>
 	</form:form>
-</pre>
-<form:form action="product">
-	<input type="submit">
-</form:form>
-<form:form action="productList">
-	<input type="submit" value="Product List">
-</form:form>
-
-<a href="${pageContext.request.contextPath}/productList"> product list </a><br>
-<a href="${pageContext.request.contextPath}/submitOrder"> User Registration </a>
-
+	
+	</div>
 </body>
 </html>

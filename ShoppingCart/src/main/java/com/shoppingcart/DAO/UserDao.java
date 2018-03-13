@@ -9,6 +9,6 @@ public interface UserDao {
 	public void insertNewUser();
 	public UserDetails findByUserId(int id);
 	public UserDetailsBean getPassword(LoginBean bean);
-	
+	public UserDetailsBean updateUserAddress(UserDetailsBean userbean);
 	
 }

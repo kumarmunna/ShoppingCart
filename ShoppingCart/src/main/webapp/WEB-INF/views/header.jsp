@@ -1,13 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+  pageEncoding="ISO-8859-1" isELIgnored="false" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<link href="${pageContext.request.contextPath}/resources/css/style.css"
+	rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <h2>Header</h2>  
+    <h2>Online Shopping Cart</h2>
+    <a href="${pageContext.request.contextPath}/productList.html">Product List</a> |
+    <a href="${pageContext.request.contextPath}/getCart.html">My Cart</a> |
+    <c:if test="${sessionScope.userstatus ne 'auth'}">
+				<a href="${pageContext.request.contextPath}/login.html">Login</a>  |
+				<a href="${pageContext.request.contextPath}/register"> User Registration </a> |
+	</c:if>
+	<c:if test="${sessionScope.userstatus eq 'auth'}">
+		<a href="${pageContext.request.contextPath}/GetProfile.html"> My Profile </a>	
+	</c:if>
     <hr/>  
 </body>
 </html>

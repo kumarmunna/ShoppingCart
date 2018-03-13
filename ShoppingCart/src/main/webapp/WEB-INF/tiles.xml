@@ -56,4 +56,9 @@
 		<put-attribute name="body" value="/WEB-INF/views/CartPage.jsp" />
 	</definition>
 	
+	<definition name="UserProfile" extends="base.definition">
+		<put-attribute name="title" value="User Profile" />
+		<put-attribute name="body" value="/WEB-INF/views/UserProfile.jsp" />
+	</definition>
+	
 </tiles-definitions>  

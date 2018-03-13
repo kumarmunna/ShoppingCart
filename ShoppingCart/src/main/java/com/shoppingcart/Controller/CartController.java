@@ -109,7 +109,77 @@ public class CartController {
 	}
 	
 	/**
+	 * This method is used to get the all items saved in cart to display all product
+	 * on cart page based on the repriced product.
 	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/getCart")
+	public ModelAndView getCartDetails(HttpServletRequest request){
+		ModelAndView mv = new ModelAndView();
+		HttpSession session = request.getSession();
+		Set<CartInfoBean> cartInfoset = getCartInfo(session);
+		Set<CartInfoBean> repricingCartData = getRepricedCartData(cartInfoset);
+		if(cartInfoset != null){
+			mv.addObject("cartInfo",repricingCartData);
+		}
+		mv.setViewName("CartPage");
+		return mv;
+		
+	}
+	/**
+	 * This method is used to get the repriced product saved in cart.
+	 * It checks the saved cart product price and if price is not equals with saved product in cart then
+	 * it get the current price from database and update in the cart bean.
+	 * 
+	 * @param cartInfo
+	 * @return
+	 */
+	public Set<CartInfoBean> getRepricedCartData(Set<CartInfoBean> cartInfo){
+		
+			Set<CartInfoBean> cartdata = new HashSet<CartInfoBean>();
+			for(CartInfoBean cartbean : cartInfo){
+				String prodCode = cartbean.getCode();
+				ProductsBean bean = getProductDetails(prodCode);
+				boolean check = checkPrice(bean,cartbean);
+				if(!check){
+					cartbean.setPrice(bean.getPrice());
+					cartbean.setSubtotal(getPriceOfQuantity(bean.getPrice(), cartbean.getQuantity()));
+				}
+				cartdata.add(cartbean);
+			}
+		return cartdata;
+	}
+	
+	/*
+	 * Method is used to get the subtotal price of product with the multiplication with
+	 * quantity selected.
+	 */
+	public int getPriceOfQuantity(double price, int qty){
+		int qntprice = ((Double)price).intValue() * qty;
+		return qntprice;
+	}
+	
+	/**
+	 * Method used to check the saved cart product price is equal or not in database.
+	 * 
+	 * @param bean
+	 * @param cart
+	 * @return
+	 */
+	public boolean checkPrice(ProductsBean bean,CartInfoBean cart){
+		boolean check = false;
+		if(((Double)bean.getPrice()).intValue() == ((Double)cart.getPrice()).intValue()){
+			check = true;
+		}else{
+			check = false;
+		}
+		return check;
+	}
+	/**
+	 * Method checks the cart info data is available or not.  
+	 * If not then it creat new set object and return that.
 	 * @param session
 	 * @return
 	 */
@@ -123,6 +193,7 @@ public class CartController {
 		return cartInfo;
 	}
 	/**
+	 * Method used to get the product details based on product code.
 	 * 
 	 * @param productCode
 	 * @return

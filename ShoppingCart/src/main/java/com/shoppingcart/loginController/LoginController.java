@@ -69,14 +69,13 @@ public class LoginController {
 			return mv;
 		}else {
 			UserDetailsBean details = userDaoImpl.getPassword(loginBean);
-			if(details != null && details.getPassword().equals(loginBean.getPassword())){
+			if(details != null ){
 				mv.setViewName("home");
 				mv.addObject("exist");
 //				logger.info("successfull login ");
 				session.setAttribute("userstatus", "auth");
 				session.setAttribute("userdetails", details);
-				String redirectUrl = request.getHeader("referer");
-				System.out.println("referer: "+ redirectUrl);
+				
 			}else{
 //				logger.info("user not exist ");
 				mv.setViewName("Login");

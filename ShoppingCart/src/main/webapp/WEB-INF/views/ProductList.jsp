@@ -10,20 +10,27 @@
 </head>
 <body>
 
+
 	<c:forEach items="${productList}" var="item">
 		<div style="float: left; border: 1px solid red;">
 			<img
 				src="${pageContext.request.contextPath}/resources/images/${item.filename}" /><br>
 			<div style="padding-left: 2em; padding-bottom: 1em;">
-				Code: ${item.code}<br>
-				Name: ${item.name}<br> 
-				Price: ${item.price}<br> 
-				<a href="${pageContext.request.contextPath}/addInCart.html?productCode=${item.code}">Add to cart </a><br> 
-				<a href="${pageContext.request.contextPath}/editProduct.html?productCode=${item.code}">Edit Product </a>
+				Code: ${item.code}<br> Name: ${item.name}<br> Price:
+				${item.price}<br> <a
+					href="${pageContext.request.contextPath}/addInCart.html?productCode=${item.code}">Add
+					to cart </a><br>
+
+				<c:if test="${sessionScope.userdetails.userrole eq 'MANAGER'}">
+					<a
+						href="${pageContext.request.contextPath}/editProduct?productCode=${item.code}">Edit
+						Product </a>
+					<br>
+				</c:if>
 			</div>
 		</div>
 	</c:forEach>
 
-<br>
+	<br>
 </body>
 </html>

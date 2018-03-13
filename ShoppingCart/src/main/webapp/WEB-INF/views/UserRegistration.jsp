@@ -14,8 +14,10 @@
 </style>
 </head>
 <body>
+<c:if test="${empty success }">
 <h1> You are not registered. Please register yourself </h1>
-
+</c:if>
+<c:out value="${success }"></c:out>
 <form:form action="userRegistration" modelAttribute="userdetails">
 <pre>
 			Name: <form:input path="name"/> <form:errors path="name" cssClass="error" />
