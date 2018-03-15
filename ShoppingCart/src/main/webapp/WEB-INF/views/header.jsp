@@ -14,7 +14,9 @@
     <h2>Online Shopping Cart</h2>
     <a href="${pageContext.request.contextPath}/productList.html">Product List</a> |
     <a href="${pageContext.request.contextPath}/getCart.html">My Cart</a> |
-    <a href="${pageContext.request.contextPath}/getOrderList.html">Order List</a> |
+    <c:if test="${(sessionScope.userstatus eq 'auth') && ((sessionScope.userdetails.userrole eq 'MANAGER') || (sessionScope.userdetails.userrole eq 'EMPLOYEE'))}">
+    	<a href="${pageContext.request.contextPath}/getOrderList.html">Order List</a> |
+    </c:if>
     <c:if test="${sessionScope.userstatus ne 'auth'}">
 				<a href="${pageContext.request.contextPath}/login.html">Login</a>  |
 				<a href="${pageContext.request.contextPath}/register"> User Registration </a> |
