@@ -61,4 +61,13 @@
 		<put-attribute name="body" value="/WEB-INF/views/UserProfile.jsp" />
 	</definition>
 	
+	<definition name="OrderList" extends="base.definition">
+		<put-attribute name="title" value="Order List" />
+		<put-attribute name="body" value="/WEB-INF/views/OrderList.jsp" />
+	</definition>
+	
+	<definition name="OrderDetailList" extends="base.definition">
+		<put-attribute name="title" value="Order Details " />
+		<put-attribute name="body" value="/WEB-INF/views/OrderDetailList.jsp" />
+	</definition>
 </tiles-definitions>  

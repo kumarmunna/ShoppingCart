@@ -123,6 +123,7 @@ public class ProductsDaoImpl implements ProductsDao {
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<Products> query = builder.createQuery(Products.class);
 			Root<Products> root = query.from(Products.class);
+			query.select(root);
 			Query<Products> q = session.createQuery(query);
 			proList = q.getResultList();
 			for (Products pro : proList) {
@@ -250,5 +251,32 @@ public class ProductsDaoImpl implements ProductsDao {
 		double price = product.getPrice();
 		session.close();
 		return price;
+	}
+	
+	/**
+	 * Method used to delete the product from database.
+	 */
+	public void deleteProductByCode(String productCode) {
+		// TODO Auto-generated method stub
+		Session session = null;
+		Transaction transaction = null;
+		try {
+			session = hibernateDaoImpl.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			Products products = session.byId(Products.class).load(
+					productCode);
+			session.delete(products);
+			transaction.commit();
+
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
 	}
 }

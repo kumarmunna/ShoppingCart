@@ -12,5 +12,6 @@ public interface ProductsDao {
 	public List<ProductsBean> getProductList();
 	public ProductsBean getProductToCart(String productCode);
 	public void deleteProduct(ProductsBean productsBean);
+	public void deleteProductByCode(String productCode);
 	public double getPrice(String productCode);
 }

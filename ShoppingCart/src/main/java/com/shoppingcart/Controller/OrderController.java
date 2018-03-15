@@ -1,5 +1,6 @@
 package com.shoppingcart.Controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +10,12 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.shoppingcart.Beans.CartInfoBean;
+import com.shoppingcart.Beans.OrderDetailsBean;
+import com.shoppingcart.Beans.OrderListBean;
 import com.shoppingcart.Beans.UserDetailsBean;
 import com.shoppingcart.DAO.OrdersDao;
 import com.shoppingcart.DAO.Orders_DetailsDao;
@@ -19,7 +23,7 @@ import com.shoppingcart.DAO.impl.HibernateDaoImpl;
 import com.shoppingcart.Model.Orders;
 
 @Controller
-public class SubmitOrderController {
+public class OrderController {
 
 	@Autowired
 	OrdersDao ordersDao;
@@ -46,6 +50,25 @@ public class SubmitOrderController {
 		return mv;
 	}
 	
+	@RequestMapping("getOrderList")
+	public ModelAndView getOrderListFromDatabase(){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("OrderList");
+		List<OrderListBean> orderlist = order_detailsDao.orderList();
+		mv.addObject("orderlist",orderlist);
+		return mv;
+	}
+	
+	@RequestMapping("getOrderDetails")
+	public ModelAndView getOrderDetailsByOrderId(@RequestParam("orderid") int orderid){
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("OrderDetailList");
+		List<OrderDetailsBean> orderlist = order_detailsDao.getOrderByOrderId(orderid);
+		System.out.println(" order ist: "+ orderlist);
+		mv.addObject("orderdetaillist",orderlist);
+		return mv;
+	}
+	
 	public boolean getUserStatus(HttpServletRequest request){
 		
 		boolean userStatus = false;
@@ -58,4 +81,6 @@ public class SubmitOrderController {
 		}
 		return userStatus;
 	}
+	
+	
 }

@@ -26,6 +26,9 @@
 						href="${pageContext.request.contextPath}/editProduct?productCode=${item.code}">Edit
 						Product </a>
 					<br>
+					<a
+						href="${pageContext.request.contextPath}/deleteProduct.html?productCode=${item.code}">Delete
+						Product </a>
 				</c:if>
 			</div>
 		</div>

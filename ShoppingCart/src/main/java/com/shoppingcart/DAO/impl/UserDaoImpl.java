@@ -2,6 +2,9 @@ package com.shoppingcart.DAO.impl;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
 import org.hibernate.Query;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.shoppingcart.Beans.UserDetailsBean;
 import com.shoppingcart.DAO.UserDao;
 import com.shoppingcart.Model.LoginBean;
+import com.shoppingcart.Model.Products;
 import com.shoppingcart.Model.UserDetails;
 
 public class UserDaoImpl implements UserDao {
@@ -87,4 +91,21 @@ public class UserDaoImpl implements UserDao {
 		return userDetails;
 	}
 
+public UserDetailsBean getUserByEmailId(String email) {
+	// TODO Auto-generated method stub
+	Session session = hibernateDaoImpl.getSessionFactory().openSession();
+	CriteriaBuilder builder = session.getCriteriaBuilder();
+	CriteriaQuery<UserDetails> query = builder.createQuery(UserDetails.class);
+	Root<UserDetails> root = query.from(UserDetails.class);
+	query.select(root).where(
+			builder.equal(root.get("email"), email));
+	@SuppressWarnings("deprecation")
+	Query<UserDetails> q = session.createQuery(query);
+	UserDetails details = q.list().get(0);
+	UserDetailsBean bean = new UserDetailsBean();
+	bean.setName(details.getName());
+	bean.setAddress(details.getAddress());
+	bean.setEmail(details.getEmail());
+	return bean;
+}
 }

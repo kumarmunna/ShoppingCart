@@ -1,18 +1,33 @@
 package com.shoppingcart.DAO.impl;
 
+import java.awt.image.BandCombineOp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.shoppingcart.Beans.CartInfoBean;
+import com.shoppingcart.Beans.OrderDetailsBean;
+import com.shoppingcart.Beans.OrderListBean;
+import com.shoppingcart.Beans.ProductsBean;
 import com.shoppingcart.Beans.UserDetailsBean;
 import com.shoppingcart.DAO.Orders_DetailsDao;
+import com.shoppingcart.DAO.ProductsDao;
+import com.shoppingcart.DAO.UserDao;
 import com.shoppingcart.Model.Orders;
 import com.shoppingcart.Model.Orders_Details;
 
@@ -20,6 +35,10 @@ public class Orders_DetailsDaoImpl implements Orders_DetailsDao {
 
 	@Autowired
 	HibernateDaoImpl hibernateDaoImpl;
+	@Autowired
+	UserDao userDao;
+	@Autowired
+	ProductsDao productsDao;
 
 	public void saveOrder(Set<CartInfoBean> cartInfoBeans,UserDetailsBean userDetailsBean) {
 		// TODO Auto-generated method stub
@@ -86,5 +105,61 @@ public class Orders_DetailsDaoImpl implements Orders_DetailsDao {
 		session.clear();
 		session.close();
 		return o;
+	}
+
+	public List<OrderListBean> orderList() {
+		// TODO Auto-generated method stub
+		Session session = hibernateDaoImpl.getSessionFactory().openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Orders> qurey = builder.createQuery(Orders.class);
+		Root<Orders> root = qurey.from(Orders.class);
+		qurey.select(root);
+		Query<Orders> qq = session.createQuery(qurey);
+		List<Orders> lst = qq.list();
+		OrderListBean orderbean = null;
+		List<OrderListBean> list = new ArrayList<OrderListBean>();
+		for (Iterator<Orders> iterator = lst.iterator(); iterator.hasNext();) {
+			Orders orders = (Orders) iterator.next();
+			orderbean = new OrderListBean();
+			orderbean.setOrderid(orders.getOrderid());
+			orderbean.setEmail(orders.getCust_email());
+			orderbean.setDate(orders.getDate());
+			orderbean.setTotalamount(orders.getTotal_amount());
+			UserDetailsBean userdetail = userDao.getUserByEmailId(orders.getCust_email());
+			orderbean.setName(userdetail.getName());
+			orderbean.setAddress(userdetail.getAddress());
+			list.add(orderbean);
+		}
+		
+		return list;
+	}
+
+	public List<OrderDetailsBean> getOrderByOrderId(int orderid) {
+		// TODO Auto-generated method stub
+		Session session = hibernateDaoImpl.getSessionFactory().openSession();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Orders_Details> query = builder.createQuery(Orders_Details.class);
+		Root<Orders_Details> root = query.from(Orders_Details.class);
+		Orders order = new Orders();
+		order.setOrderid(orderid);
+		
+		List list = session.createQuery("from Orders_Details where OrderId="+orderid).list();
+		List<OrderDetailsBean> orderDetailList = new ArrayList<OrderDetailsBean>();
+		OrderDetailsBean bean = null;
+		System.out.println(" befor for loop ----->> ");
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Orders_Details orders_Details = (Orders_Details) iterator.next();
+			bean = new OrderDetailsBean();
+			System.out.println(" inside for loop with orderid----->> "+ orders_Details.getOrderId().getOrderid());
+			bean.setOrderid(orders_Details.getOrderId().getOrderid());
+			bean.setProductCode(orders_Details.getProduct_code());
+			ProductsBean productsBean = productsDao.getProductsDetail(orders_Details.getProduct_code());
+			bean.setProductName(productsBean.getName());
+			bean.setProductPrice(orders_Details.getProduct_price());
+			bean.setQuantity(orders_Details.getQuantity());
+			bean.setTotalAmount(orders_Details.getTotal_amount());
+			orderDetailList.add(bean);
+		}
+		return orderDetailList;
 	}
 }

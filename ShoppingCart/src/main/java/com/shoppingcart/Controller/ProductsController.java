@@ -36,19 +36,17 @@ public class ProductsController {
 
 	@Autowired
 	private ProductsDao productsDao;
-	
+
 	@Autowired
 	private ProductValidator productValidator;
-	
-	
+
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-		System.out.println(" Validating Product Jsp ");
 		binder.setDisallowedFields("data");
-	      binder.addValidators(productValidator);
+		binder.addValidators(productValidator);
 	}
-	
-	@RequestMapping(value = { "/"}, method = RequestMethod.GET)
+
+	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("ProductList");
@@ -59,16 +57,17 @@ public class ProductsController {
 
 	/**
 	 * Method use to redirect on the add product view.
+	 * 
 	 * @return
 	 */
 	@RequestMapping("/product")
-	public ModelAndView product(){
+	public ModelAndView product() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("addProducts");
-		mv.addObject("productbean",new ProductsBean());
-		System.out.println("Method: product ....END ");
+		mv.addObject("productbean", new ProductsBean());
 		return mv;
 	}
+
 	/**
 	 * Method used for add product in database.
 	 * 
@@ -79,51 +78,69 @@ public class ProductsController {
 	 * @throws SerialException
 	 * @throws SQLException
 	 */
-	@RequestMapping(value= "/addProduct",method=RequestMethod.POST)
-	public ModelAndView SaveProductInDataBase(@ModelAttribute("productbean") ProductsBean productsBean,
-			BindingResult result, Model model) throws SerialException, SQLException{
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+	public ModelAndView SaveProductInDataBase(
+			@ModelAttribute("productbean") ProductsBean productsBean,
+			BindingResult result, Model model) throws SerialException,
+			SQLException {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("addProducts");
 		productsDao.saveProducts(productsBean);
-		
+
 		return mv;
 	}
+
 	/**
 	 * Method used for edit product.
+	 * 
 	 * @param productCode
 	 * @return
 	 */
 	@RequestMapping("/editAndSaveProduct")
-	public ModelAndView editProduct(@ModelAttribute("productbean") @Validated ProductsBean productsBean,
+	public ModelAndView editProduct(
+			@ModelAttribute("productbean") @Validated ProductsBean productsBean,
 			BindingResult result, Model model) {
 		ModelAndView mv = new ModelAndView();
-		if(result.hasErrors()){
-			System.out.println(" in has error =-> "+result.getFieldError());
+		if (result.hasErrors()) {
 			mv.setViewName("EditProduct");
-		}else{
+		} else {
 			productsDao.editProducts(productsBean);
 			mv.setViewName("redirect:/productList");
 		}
 		return mv;
 	}
+
 	/**
 	 * This method is used to redirect to edit product page.
+	 * 
 	 * @param productCode
 	 * @return
 	 */
 	@RequestMapping("/editProduct")
-	public ModelAndView editPageRedirect(@RequestParam("productCode") String productCode){
+	public ModelAndView editPageRedirect(
+			@RequestParam("productCode") String productCode) {
 		ModelAndView mv = new ModelAndView();
 		ProductsBean productsBean = productsDao.getProductsDetail(productCode);
 		mv.addObject("productbean", productsBean);
 		mv.setViewName("EditProduct");
 		return mv;
 	}
-	
+
 	@RequestMapping("/productList")
 	public ModelAndView getProductsList() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("ProductList");
+		List<ProductsBean> productList = productsDao.getProductList();
+		mv.addObject("productList", productList);
+		return mv;
+	}
+
+	@RequestMapping("/deleteProduct")
+	public ModelAndView deleteProductFromDatabase(
+			@RequestParam("productCode") String productCode) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("ProductList");
+		productsDao.deleteProductByCode(productCode);
 		List<ProductsBean> productList = productsDao.getProductList();
 		mv.addObject("productList", productList);
 		return mv;

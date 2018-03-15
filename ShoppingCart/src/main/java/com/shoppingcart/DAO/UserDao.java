@@ -10,5 +10,5 @@ public interface UserDao {
 	public UserDetails findByUserId(int id);
 	public UserDetailsBean getPassword(LoginBean bean);
 	public UserDetailsBean updateUserAddress(UserDetailsBean userbean);
-	
+	public UserDetailsBean getUserByEmailId(String email);
 }
