@@ -5,6 +5,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,33 +28,34 @@ import com.shoppingcart.Validator.LoginValidator;
 @Controller
 public class LoginController {
 
-	//private Logger logger = Logger.getLogger(LoginController.class);
-	
+	// private Logger logger = Logger.getLogger(LoginController.class);
+
 	@Autowired
 	LoginValidator loginValidator;
 	@Autowired
 	UserDaoImpl userDaoImpl;
-	
+
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-		System.out.println(" in binder mathod---------------------------");
-	      binder.addValidators(loginValidator);
+		binder.addValidators(loginValidator);
 	}
-	
+
 	/**
 	 * This method used to redirect the login page from request.
+	 * 
 	 * @return
 	 */
-	@RequestMapping(value = { "/loginPage"}, method = RequestMethod.GET)
+	@RequestMapping(value = { "/loginPage" }, method = RequestMethod.GET)
 	public ModelAndView welcomePage() {
 		ModelAndView model = new ModelAndView();
-		model.addObject("loginbean",new LoginBean());
+		model.addObject("loginbean", new LoginBean());
 		model.setViewName("Login");
 		return model;
 	}
-	
+
 	/**
 	 * Method used to login the users
+	 * 
 	 * @param loginBean
 	 * @param result
 	 * @param model
@@ -59,32 +63,53 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping("/login")
-	public ModelAndView userLogin(@ModelAttribute("loginbean") @Validated LoginBean loginBean,
-			BindingResult result, Model model,HttpServletRequest request) {
-	//	logger.info("Execution:: userLogin");
+	public ModelAndView userLogin(
+			@ModelAttribute("loginbean") @Validated LoginBean loginBean,
+			BindingResult result, Model model, HttpServletRequest request) {
+		// logger.info("Execution:: userLogin");
 		ModelAndView mv = new ModelAndView();
 		HttpSession session = request.getSession();
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			mv.setViewName("Login");
 			return mv;
-		}else {
+		} else {
 			UserDetailsBean details = userDaoImpl.getPassword(loginBean);
-			if(details != null ){
+			if (details != null) {
 				mv.setViewName("home");
 				mv.addObject("exist");
-//				logger.info("successfull login ");
+				// logger.info("successfull login ");
 				session.setAttribute("userstatus", "auth");
 				session.setAttribute("userdetails", details);
-				
-			}else{
-//				logger.info("user not exist ");
+
+			} else {
+				// logger.info("user not exist ");
 				mv.setViewName("Login");
 				mv.addObject("notexist", "User's user name does not exist :) ");
 				session.setAttribute("userstatus", "unauth");
-			
+
 			}
 		}
 		return mv;
 	}
-	
+
+	// for 403 access denied page
+	@RequestMapping(value = "/403", method = RequestMethod.GET)
+	public ModelAndView accesssDenied() {
+
+		ModelAndView model = new ModelAndView();
+		System.out.println("checking auth: ");
+		// check if user is login
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		System.out.println("auth: "+ auth);
+		if (!(auth instanceof AnonymousAuthenticationToken)) {
+			UserDetails userDetail = (UserDetails) auth.getPrincipal();
+			model.addObject("username", userDetail.getUsername());
+		}
+
+		model.setViewName("403");
+		return model;
+
+	}
+
 }

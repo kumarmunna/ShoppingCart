@@ -12,7 +12,7 @@ public class LoginValidator implements Validator
 
 	public boolean supports(Class<?> arg0) {
 		// TODO Auto-generated method stub
-		System.out.println(" ------------------------ in supports ----------------,,,"+ arg0);
+		System.out.println(" ------------------------ in supports login validator ----------------,,,"+ arg0);
 		return LoginBean.class.equals(arg0);
 	}
 

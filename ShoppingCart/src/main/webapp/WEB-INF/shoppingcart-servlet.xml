@@ -28,6 +28,8 @@
 	<bean id="order_detailsDao" class="com.shoppingcart.DAO.impl.Orders_DetailsDaoImpl"></bean>
 	<bean id="userDao" class="com.shoppingcart.DAO.impl.UserRegistrationDaoImpl"></bean>
 
+	<!-- Spring Security bean configuration -->
+
 
 	<!-- View Resolver configuration -->
 	<bean name="viewResolver"
